@@ -1,4 +1,9 @@
 import typing
+import re
+
+
+class NoKeywordFound(Exception):
+    pass
 
 
 class KeywordMatcher:
@@ -27,3 +32,11 @@ class KeywordMatcher:
 
     def is_keyword(self, text: str):
         return text.lower() in self.keywords
+
+    def get_match_at_beginning(self, text: str) -> str:
+        pattern = "|".join(self.keywords)
+        match = re.match(pattern, text.strip(), flags=re.I)
+        if match:
+            return match.group()
+        else:
+            raise NoKeywordFound(f"No keyword found in '{text}'")

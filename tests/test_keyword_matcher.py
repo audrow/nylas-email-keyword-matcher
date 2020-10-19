@@ -1,12 +1,12 @@
 import pytest
 
 from nylas_email_keyword_matcher.keyword_matcher import \
-    KeywordMatcher
+    KeywordMatcher, NoKeywordFound
 
 
 @pytest.fixture
 def unique_keywords():
-    return ['a"bc', 'def', 'ghi', 'klm', 'nop']
+    return ['abc', 'def', 'ghi', 'klm', 'nop']
 
 
 @pytest.fixture
@@ -63,3 +63,19 @@ def test_is_keyword(keyword_matcher, unique_keywords):
         assert keyword_matcher.is_keyword(k.capitalize())
     for k in unique_keywords:
         assert not keyword_matcher.is_keyword("bar" + k + "baz")
+
+
+def test_match_at_in_text_body(keyword_matcher):
+    text = 'Here is some text'
+    for keyword in ['keyword', 'MULTIPLE WORD KEYWORD']:
+        assert not keyword_matcher.is_keyword(keyword)
+        keyword_matcher.add_keyword(keyword)
+
+        with pytest.raises(NoKeywordFound):
+            keyword_matcher.get_match_at_beginning(f'{text}')
+        with pytest.raises(NoKeywordFound):
+            keyword_matcher.get_match_at_beginning(f'{text} {keyword}')
+
+        assert keyword == keyword_matcher.get_match_at_beginning(keyword)
+        assert keyword == keyword_matcher.get_match_at_beginning(f'{keyword} {text}')
+        assert keyword == keyword_matcher.get_match_at_beginning(f'\n\t   {keyword} {text}')
