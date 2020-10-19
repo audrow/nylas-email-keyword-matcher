@@ -89,6 +89,13 @@ class NylasEmailer:
         except NoEmailReplyError:
             return False
 
+    def mark_reply_as_read(self, subject: str):
+        try:
+            thread_id = self._get_reply_thread_id(subject)
+            self._mark_as_read(thread_id)
+        except NoEmailReplyError as e:
+            raise NoEmailReplyError("No unread email reply to mark as read") from e
+
     def _get_reply_thread_id(self, subject: str) -> str:
         with self._nylas_context_manager as nylas:
             threads = nylas.threads.where(subject=subject, unread=True)
@@ -102,7 +109,15 @@ class NylasEmailer:
             else:
                 raise RuntimeError("There should never be a negative number of threads")
 
-    def _get_body(self, thread_id, is_strip_html=True) -> str:
+    def _mark_as_read(self, thread_id: str):
+        with self._nylas_context_manager as nylas:
+            try:
+                thread = nylas.threads.get(thread_id)
+            except ConnectionError as e:
+                raise NoThreadFoundError(f"No thread with id '{thread_id}' found") from e
+            thread.mark_as_read()
+
+    def _get_body(self, thread_id: str, is_strip_html=True) -> str:
         with self._nylas_context_manager as nylas:
             try:
                 thread = nylas.threads.get(thread_id)
@@ -130,5 +145,6 @@ if __name__ == '__main__':
     n.send(subject_, 'test body!', 'robotaudrow@gmail.com')
 
     text = n.get_reply(subject_)
+    n.mark_reply_as_read(subject_)
     print(text)
 
