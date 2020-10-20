@@ -136,15 +136,3 @@ class NylasEmailer:
     def get_random_string(length=6):
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for _ in range(length))
-
-
-if __name__ == '__main__':
-
-    n = NylasEmailer(NylasContextManager())
-    subject_ = 'test subject - ' + n.get_random_string()
-    n.send(subject_, 'test body!', 'robotaudrow@gmail.com')
-
-    text = n.get_reply(subject_)
-    n.mark_reply_as_read(subject_)
-    print(text)
-
