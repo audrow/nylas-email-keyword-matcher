@@ -4,25 +4,6 @@ from nylas_email_keyword_matcher.keyword_matcher import \
     KeywordMatcher, NoKeywordFound
 
 
-@pytest.fixture
-def unique_keywords():
-    return ['abc', 'def', 'ghi', 'klm', 'nop']
-
-
-@pytest.fixture
-def nonunique_keywords(unique_keywords):
-    out = []
-    for keyword in unique_keywords:
-        for _ in range(2):
-            out.append(keyword)
-    return out
-
-
-@pytest.fixture
-def keyword_matcher(unique_keywords):
-    return KeywordMatcher(*unique_keywords)
-
-
 def test_add_keywords_individually_after_init(unique_keywords):
     km = KeywordMatcher()
     assert len(km.keywords) == 0
@@ -146,5 +127,3 @@ def test_match_keyword_with_multiple_keywords_in_text_body(keyword_matcher):
         f'{keyword1} {keyword2} {keyword2}', is_at_beginning_only=is_at_beginning_only)
     assert keyword2 == keyword_matcher.get_first_keyword(
         f'{keyword2} {keyword1} {keyword1}', is_at_beginning_only=is_at_beginning_only)
-
-
