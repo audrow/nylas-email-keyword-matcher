@@ -19,7 +19,7 @@ class KeywordMatcher:
             self.add_keyword(keyword)
 
     def add_keyword(self, keyword: str):
-        if self.is_keyword(keyword):
+        if keyword in self:
             raise RuntimeError(f"Keyword '{keyword}' already added")
         self._keywords.append(keyword.lower())
 
@@ -30,12 +30,22 @@ class KeywordMatcher:
     def __str__(self):
         return ', '.join([f'"{k}"' for k in self.keywords])
 
-    def is_keyword(self, text: str):
-        return text.lower() in self.keywords
+    def __contains__(self, item):
+        return item.lower() in self.keywords
 
-    def get_match_at_beginning(self, text: str) -> str:
-        pattern = "|".join(self.keywords)
-        match = re.match(pattern, text.strip(), flags=re.I)
+    def has_keyword(self, text: str, is_at_beginning_only: bool = True) -> bool:
+        try:
+            self.get_first_keyword(
+                text=text, is_at_beginning_only=is_at_beginning_only)
+            return True
+        except NoKeywordFound:
+            return False
+
+    def get_first_keyword(self, text: str, is_at_beginning_only: bool = True) -> str:
+        pattern = '(' + '|'.join(self.keywords) + ')'
+        if is_at_beginning_only:
+            pattern = '^' + pattern
+        match = re.search(pattern, text.strip(), flags=re.I)
         if match:
             return match.group()
         else:
