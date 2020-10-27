@@ -94,7 +94,8 @@ class NylasEmailer:
             thread_id = self._get_reply_thread_id(subject)
             self._mark_as_read(thread_id)
         except NoEmailReplyError as e:
-            raise NoEmailReplyError("No unread email reply to mark as read") from e
+            raise NoEmailReplyError(
+                "No unread email reply to mark as read") from e
 
     def _get_reply_thread_id(self, subject: str) -> str:
         with self._nylas_context_manager as nylas:
@@ -105,16 +106,19 @@ class NylasEmailer:
             elif num_threads == 0:
                 raise NoEmailReplyError()
             elif num_threads > 1:
-                raise MultipleMatchingEmailThreadsError("The reply is ambiguous")
+                raise MultipleMatchingEmailThreadsError(
+                    "The reply is ambiguous")
             else:
-                raise RuntimeError("There should never be a negative number of threads")
+                raise RuntimeError(
+                    "There should never be a negative number of threads")
 
     def _mark_as_read(self, thread_id: str):
         with self._nylas_context_manager as nylas:
             try:
                 thread = nylas.threads.get(thread_id)
             except ConnectionError as e:
-                raise NoThreadFoundError(f"No thread with id '{thread_id}' found") from e
+                raise NoThreadFoundError(
+                    f"No thread with id '{thread_id}' found") from e
             thread.mark_as_read()
 
     def _get_body(self, thread_id: str, is_strip_html=True) -> str:
@@ -122,7 +126,8 @@ class NylasEmailer:
             try:
                 thread = nylas.threads.get(thread_id)
             except ConnectionError as e:
-                raise NoThreadFoundError(f"No thread with id '{thread_id}' found") from e
+                raise NoThreadFoundError(
+                    f"No thread with id '{thread_id}' found") from e
 
             last_message = thread.messages[0]
             html = last_message['body']

@@ -45,11 +45,10 @@ def send_email(
         to_email,
     )
 
-    yield real_nylas_emailer, random_subject, random_body_content, random_body_html_content
+    yield (real_nylas_emailer, random_subject,
+           random_body_content, random_body_html_content)
 
     try:
         real_nylas_emailer.mark_reply_as_read(random_subject)
     except NoEmailReplyError:
         pass
-
-

@@ -124,6 +124,8 @@ def test_match_keyword_with_multiple_keywords_in_text_body(keyword_matcher):
                 content, is_at_beginning_only=is_at_beginning_only)
 
     assert keyword1 == keyword_matcher.get_first_keyword(
-        f'{keyword1} {keyword2} {keyword2}', is_at_beginning_only=is_at_beginning_only)
+        f'{keyword1} {keyword2} {keyword2}',
+        is_at_beginning_only=is_at_beginning_only)
     assert keyword2 == keyword_matcher.get_first_keyword(
-        f'{keyword2} {keyword1} {keyword1}', is_at_beginning_only=is_at_beginning_only)
+        f'{keyword2} {keyword1} {keyword1}',
+        is_at_beginning_only=is_at_beginning_only)

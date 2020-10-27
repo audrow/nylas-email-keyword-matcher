@@ -7,7 +7,8 @@ from nylas_email_keyword_matcher.nylas_context_manager import \
 
 @pytest.fixture
 def nylas_api_mock(mocker):
-    return mocker.patch('nylas_email_keyword_matcher.nylas_context_manager.APIClient')
+    return mocker.patch(
+        'nylas_email_keyword_matcher.nylas_context_manager.APIClient')
 
 
 def make_nylas_manager():

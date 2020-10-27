@@ -15,5 +15,6 @@ setup(
         'pytest',
         'pytest-mock',
         'pytest-timeout',
+        'flake8'
     ]
 )

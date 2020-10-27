@@ -33,7 +33,8 @@ class KeywordMatcher:
     def __contains__(self, item):
         return item.lower() in self.keywords
 
-    def has_keyword(self, text: str, is_at_beginning_only: bool = True) -> bool:
+    def has_keyword(
+            self, text: str, is_at_beginning_only: bool = True) -> bool:
         try:
             self.get_first_keyword(
                 text=text, is_at_beginning_only=is_at_beginning_only)
@@ -41,7 +42,8 @@ class KeywordMatcher:
         except NoKeywordFound:
             return False
 
-    def get_first_keyword(self, text: str, is_at_beginning_only: bool = True) -> str:
+    def get_first_keyword(
+            self, text: str, is_at_beginning_only: bool = True) -> str:
         pattern = '(' + '|'.join(self.keywords) + ')'
         if is_at_beginning_only:
             pattern = '^' + pattern

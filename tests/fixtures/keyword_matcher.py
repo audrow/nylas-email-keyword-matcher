@@ -24,5 +24,3 @@ def nonunique_keywords(unique_keywords):
 @pytest.fixture
 def keyword_matcher(unique_keywords):
     return KeywordMatcher(*unique_keywords)
-
-
