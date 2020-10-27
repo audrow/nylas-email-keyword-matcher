@@ -1,21 +1,56 @@
-from setuptools import setup, find_packages
+"""
+Publish a new version:
+$ git tag X.Y.Z -m "Release X.Y.Z"
+$ git push --tags
+$ pip install --upgrade twine wheel
+$ python setup.py sdist bdist_wheel --universal
+$ twine upload dist/*
+"""
+import codecs
+from setuptools import setup
+
+
+def read_file(filename):
+    """
+    Read a utf8 encoded text file and return its contents.
+    """
+    with codecs.open(filename, 'r', 'utf8') as f:
+        return f.read()
+
 
 setup(
-    name='NylasEmailKeywordMatcher',
-    version='0.0.1',
-    url='https://github.com/audrow.git',
-    author='Author Name',
+    name='nylas-email-keyword-matcher',
+    packages=['nylas_email_keyword_matcher'],
+    version='1.0.0',
+    description='Use respond to an email to trigger specific callbacks.',
+    long_description=read_file('README.md'),
+    long_description_content_type='text/markdown',
+    license='MIT',
+    author='Audrow Nash',
     author_email='audrow@hey.com',
-    description='Send emails and check the reply for keywords.',
-    packages=find_packages(),    
+    url='https://github.com/audrow/nylas-email-keyword-matcher',
+    keywords=[
+        'email',
+    ],
     install_requires=[
-        'nylas',
+        'nylas',           # an email client
     ],
     tests_require=[
-        'flake8',
-        'pytest',
-        'pytest-cov',
-        'pytest-mock',
-        'pytest-timeout',
-    ]
+        'pytest',  # a testing framework
+        'pytest-cov',  # checks the test coverage
+        'pytest-flake8',  # check code style for pep-8
+        'pytest-mock',  # for mocks
+        'pytest-timeout',  # make sure tests don't run too long
+    ],
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Natural Language :: English',
+    ],
+    python_requires='>=3.6',
 )
