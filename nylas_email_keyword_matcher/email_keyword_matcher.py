@@ -1,6 +1,7 @@
 from typing import Optional
 
-from nylas_email_keyword_matcher import NylasEmailer, KeywordMatcher, exceptions
+from nylas_email_keyword_matcher import \
+    NylasEmailer, KeywordMatcher, exceptions
 
 
 class NylasEmailKeywordMatcher:
@@ -32,7 +33,8 @@ class NylasEmailKeywordMatcher:
                 message,
                 *to,
                 timeout=timeout,
-                is_keyword_at_beginning_of_text_only=is_keyword_at_beginning_of_text_only
+                is_keyword_at_beginning_of_text_only=(
+                    is_keyword_at_beginning_of_text_only)
             )
         return response
 
@@ -48,8 +50,9 @@ class NylasEmailKeywordMatcher:
         try:
             return self.get_response(
                 subject=subject, timeout=timeout,
-                is_keyword_at_beginning_of_text_only=
-                is_keyword_at_beginning_of_text_only)
+                is_keyword_at_beginning_of_text_only=(
+                    is_keyword_at_beginning_of_text_only
+                ))
         except exceptions.NoKeywordFound:
             self._send_email(
                 f'ERROR: {subject}',

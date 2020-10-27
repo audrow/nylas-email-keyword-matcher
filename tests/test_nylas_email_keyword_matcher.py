@@ -38,7 +38,8 @@ def test_send_email(mock_nylas_email_keyword_matcher):
             *to,
         )
         assert nylas_emailer_mock.send.called
-        assert nylas_emailer_mock.send.call_args.args == (subject, message, *to)
+        assert nylas_emailer_mock.send.call_args.args == \
+               (subject, message, *to)
 
 
 def test_send_keywords_email(mock_nylas_email_keyword_matcher):
@@ -69,7 +70,8 @@ def test_get_response_valid(mock_nylas_email_keyword_matcher):
 
     for keyword in keyword_matcher.keywords:
         nylas_emailer_mock.get_reply.return_value = keyword + ' other text'
-        response = email_matcher.get_response('my subject', is_keyword_at_beginning_of_text_only=True)
+        response = email_matcher.get_response(
+            'my subject', is_keyword_at_beginning_of_text_only=True)
         assert response == keyword
 
 
@@ -81,7 +83,8 @@ def test_get_response_invalid(mock_nylas_email_keyword_matcher):
         assert keyword not in keyword_matcher.keywords
         nylas_emailer_mock.get_reply.return_value = keyword + ' other text'
         with pytest.raises(exceptions.NoKeywordFound):
-            email_matcher.get_response('my subject', is_keyword_at_beginning_of_text_only=True)
+            email_matcher.get_response(
+                'my subject', is_keyword_at_beginning_of_text_only=True)
 
 
 def test_run_once_no_error(mock_nylas_email_keyword_matcher):
@@ -122,11 +125,14 @@ def test_run_once_no_keyword(mock_nylas_email_keyword_matcher):
     assert nylas_emailer_mock.mark_reply_as_read.called
 
 
-def test_send_email_then_wait_to_process_reply(mock_nylas_email_keyword_matcher, mocker):
+def test_send_email_then_wait_to_process_reply(
+        mock_nylas_email_keyword_matcher, mocker):
     email_matcher, nylas_emailer_mock, keyword_matcher = \
         mock_nylas_email_keyword_matcher
     keyword = keyword_matcher.keywords[0]
-    run_once_patch = mocker.patch('nylas_email_keyword_matcher.email_keyword_matcher.NylasEmailKeywordMatcher._run_once')
+    run_once_patch = mocker.patch(
+        'nylas_email_keyword_matcher.email_keyword_matcher.'
+        'NylasEmailKeywordMatcher._run_once')
     run_once_patch.side_effect = [None, None, keyword]
 
     assert keyword == email_matcher.send_email_then_wait_to_process_reply(

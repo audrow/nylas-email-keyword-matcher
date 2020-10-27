@@ -8,8 +8,10 @@ from nylas_email_keyword_matcher.nylas_emailer import \
 @pytest.mark.timeout(60)
 def test_send_email(send_email):
     nylas_emailer, subject, content, html_content = send_email
-    assert html_content == nylas_emailer.get_reply(subject, timeout=None, is_strip_html=False)
-    assert content == nylas_emailer.get_reply(subject, timeout=None, is_strip_html=True)
+    assert html_content == nylas_emailer.get_reply(
+        subject, timeout=None, is_strip_html=False)
+    assert content == nylas_emailer.get_reply(
+        subject, timeout=None, is_strip_html=True)
 
 
 @pytest.mark.uses_nylas_api

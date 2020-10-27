@@ -1,3 +1,5 @@
+# flake8: noqa
+
 from nylas_email_keyword_matcher.nylas_emailer import NylasEmailer
 from nylas_email_keyword_matcher.nylas_context_manager import NylasContextManager
 from nylas_email_keyword_matcher.keyword_matcher import KeywordMatcher

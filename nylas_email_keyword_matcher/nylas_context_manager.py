@@ -26,7 +26,8 @@ class NylasContextManager:
     def _make_api_client(self) -> APIClient:
         try:
             client = APIClient(**self._client_kwargs)
-            logger.info(f'Nylas client created from account id {client.account["id"]}')
+            logger.info(
+                f'Nylas client created from account id {client.account["id"]}')
             self._api_client = client
             return self._api_client
         except Exception as e:
