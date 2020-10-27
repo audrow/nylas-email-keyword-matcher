@@ -33,9 +33,7 @@ setup(
         'email',
     ],
     install_requires=[
-        'nylas',           # an email client
-    ],
-    tests_require=[
+        'nylas',  # an email client
         'pytest',  # a testing framework
         'pytest-cov',  # checks the test coverage
         'pytest-flake8',  # check code style for pep-8
